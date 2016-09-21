@@ -1,7 +1,7 @@
 # Grace
 Graph-Constrained Estimation and Hypothesis Tests
 
-R software for [Grace](https://cran.r-project.org/web/packages/Grace/)
+R software for [Grace](https://cran.r-project.org/web/packages/Grace/).
 
 The paper "A Significance Test for Graph-Constrained Estimation" is published on [Biometrics](http://onlinelibrary.wiley.com/doi/10.1111/biom.12418/abstract), and can be found on ArXiv(http://arxiv.org/abs/1506.08339).
 
