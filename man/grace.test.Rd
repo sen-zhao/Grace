@@ -10,7 +10,8 @@
   Test for the association between Y and each column of X using the Grace test based on Zhao and Shojaie (2016).
 }
 \usage{
-  grace.test(Y,X,L = NULL,lambda.L,lambda.2=0,normalize.L=FALSE,eta=0.05,C=4*sqrt(3),K=10)
+  grace.test(Y, X, L = NULL, lambda.L = NULL, lambda.2 = 0, normalize.L = FALSE,
+  eta = 0.05, C = 4 * sqrt(3), K = 10, sigma.error = NULL)
 }
 \arguments{
   \item{Y}{
@@ -35,10 +36,13 @@
     sparsity parameter \eqn{\eta} (see details).
   }
   \item{C}{
-    parameter for the initial estimator (see details).
+    parameter for the initial estimator (see details). It could also be "cv" or "scaled.lasso", in which case cross-validation or the scaled lasso are applied to estimate the initial estimator.
   }
   \item{K}{
     number of folds in cross-validation.
+  }
+  \item{sigma.error}{
+    error standard deviation. If NULL, scaled lasso is then applied to estimate it.
   }
 }
 \details{
@@ -50,7 +54,7 @@ The Grace tests are based on the following Grace estimator:
 
 In the formulation, L is the penalty weight matrix. Tuning parameters lambda.L and lambda.2 may be chosen by cross-validation. In practice, X and Y are standardized and centered, respectively, before estimating \eqn{\hat\beta}. The resulting estimate is then rescaled back into the original scale. Note that the intercept \eqn{\hat\alpha} is not penalized.
 
-To perform the Grace tests, the lasso initial estimator is calculated using lasso tuning parameter \eqn{\sigma_\epsilon C\sqrt{\log(p)/n}}. The Grace test requires C to be larger than \eqn{2\sqrt{2}}. \eqn{\sigma_\epsilon} is the error standard deviation, which is estimated using the scaled lasso (Sun and Zhang 2012).
+To perform the Grace tests, the lasso initial estimator is calculated using lasso tuning parameter \eqn{\sigma_\epsilon C\sqrt{\log(p)/n}}. The Grace test requires C to be larger than \eqn{2\sqrt{2}}. \eqn{\sigma_\epsilon} is the error standard deviation, which is estimated using the scaled lasso (Sun and Zhang, 2012).
 
 \eqn{\eta<0.5} is the sparsity parameter of \eqn{\beta}, which controls the level of bias correction. It is assumed that the number of nonzero elements in \eqn{\beta}, \eqn{s=o([n/\log(p)]^\eta)}. This parameter is usually unknown. Using larger values of \eqn{\eta} leads to more conservative results.
 }
@@ -59,6 +63,7 @@ To perform the Grace tests, the lasso initial estimator is calculated using lass
   \item{intercept}{fitted intercept.}
   \item{beta}{fitted regression coefficients.}
   \item{pvalue}{p-values based on the Grace tests.}
+  \item{group.test}{function to perform the group test, with the null hypothesis being that all the regression coefficients in the group equal zero. The argument of this function needs to be an index vector of variables. There is an optimal second argument, which specifies whether the group test should be performed based on the "holm" procedure (default), or based on the "max" test statstic. The output is the p-value of the group test. See examples below.}
 }
 \references{
   Li, C., and Li, H. (2008). Network-constrained regularization and variable selection for analysis of genomic data. Bioinformatics, 24, 1175-1182.
@@ -90,13 +95,31 @@ ind <- lower.tri(L, diag = FALSE)
 L[ind] <- t(L)[ind]
 diag(L) <- -rowSums(L)
 
-beta <- eigen(L)$vectors[, p] * 10
+beta <- c(rep(1, 10), rep(0, p - 10))
 
 Sigma <- solve(L + 0.1 * diag(p))
-sigma.error <- sqrt(t(beta) \%*\% Sigma \%*\% beta) / 10
+sigma.error <- sqrt(t(beta) \%*\% Sigma \%*\% beta) / 2
 
 X <- mvrnorm(n, mu = rep(0, p), Sigma = Sigma)
 Y <- c(X \%*\% beta + rnorm(n, sd = sigma.error))
 
-grace.test(Y, X, L, lambda.L = 100, lambda.2 = 1)
+grace.test.result <- grace.test(Y, X, L, lambda.L = c(0.08, 0.12),
+                                lambda.2 = c(0.08, 0.12))
+mean(grace.test.result$pvalue[beta == 0] < 0.05)
+
+grace.test.result$group.test(1:2)
+grace.test.result$group.test(3:50)
+grace.test.result$group.test(11:100)
+
+grace.test.result$group.test(1:2, method = "max")
+grace.test.result$group.test(3:50, method = "max")
+grace.test.result$group.test(11:100, method = "max")
+
+grace.test.result <- grace.test(Y, X, L, lambda.L = c(0.08, 0.12),
+                                lambda.2 = c(0.08, 0.12), C = "cv")
+mean(grace.test.result$pvalue[beta == 0] < 0.05)
+
+grace.test.result <- grace.test(Y, X, L, lambda.L = c(0.08, 0.12),
+                                lambda.2 = c(0.08, 0.12), C = "scaled.lasso")
+mean(grace.test.result$pvalue[beta == 0] < 0.05)
 }
