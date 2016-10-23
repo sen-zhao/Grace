@@ -110,16 +110,9 @@ mean(grace.test.result$pvalue[beta == 0] < 0.05)
 grace.test.result$group.test(1:2)
 grace.test.result$group.test(3:50)
 grace.test.result$group.test(11:100)
-
-grace.test.result$group.test(1:2, method = "max")
-grace.test.result$group.test(3:50, method = "max")
-grace.test.result$group.test(11:100, method = "max")
+grace.test.result$group.test(1:5, method = "max")
 
 grace.test.result <- grace.test(Y, X, L, lambda.L = c(0.08, 0.12),
                                 lambda.2 = c(0.08, 0.12), C = "cv")
-mean(grace.test.result$pvalue[beta == 0] < 0.05)
-
-grace.test.result <- grace.test(Y, X, L, lambda.L = c(0.08, 0.12),
-                                lambda.2 = c(0.08, 0.12), C = "scaled.lasso")
 mean(grace.test.result$pvalue[beta == 0] < 0.05)
 }

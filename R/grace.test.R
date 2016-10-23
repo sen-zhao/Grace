@@ -109,8 +109,8 @@ grace.test <- function(Y, X, L = NULL, lambda.L = NULL, lambda.2 = 0, normalize.
   
   # Initial estimator
   if(is.numeric(C)){
-    lam <- sig.L * C * sqrt(log(p) / n) / 2 # Lasso initial tuning parameter
-    beta.init <- glmnet(X, Y, lambda = lam, intercept = FALSE)$beta[, 1]   # Initial estimator
+    lam <- sig.L * C * sqrt(log(p) / n) / 2
+    beta.init <- glmnet(X, Y, lambda = lam, intercept = FALSE)$beta[, 1]
   }else if(C == "cv"){
     lam <- cv.glmnet(X, Y, intercept = FALSE)$lambda.min
     beta.init <- glmnet(X, Y, intercept = FALSE, lambda = lam)$beta[, 1]
