@@ -23,6 +23,8 @@
 # group.test:         function to perform group-wise hypothesis test.
 
 grace.test <- function(Y, X, L = NULL, lambda.L = NULL, lambda.2 = 0, normalize.L = FALSE, eta = 0.05, C = 4 * sqrt(3), K = 10, sigma.error = NULL){
+  n <- nrow(X)
+  p <- ncol(X)
   if(is.null(L)){
     L <- matrix(0, nrow = p, ncol = p)
     lambda.L <- 0
@@ -60,10 +62,8 @@ grace.test <- function(Y, X, L = NULL, lambda.L = NULL, lambda.2 = 0, normalize.
   # ----------------------
   # | Data Preprocessing |
   # ----------------------
-
-    Y <- Y - mean(Y)
-  n <- nrow(X)
-  p <- ncol(X)
+  
+  Y <- Y - mean(Y)
   scale.fac <- attr(scale(X), "scaled:scale")
   X <- scale(X)
   
