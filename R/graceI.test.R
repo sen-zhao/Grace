@@ -20,6 +20,7 @@
 # ----------------------------------------------------------------------------------------------
 
 
-grace.test <- function(Y, X, lambda.2, eta = 0.05, C = 4 * sqrt(3), K = 10, sigma.error = NULL){
-  return(graceI.result <- grace.test(Y = Y, X = X, L = NULL, lambda.L = NULL, lambda.2 = lambda.2, normalize.L = FALSE, eta = eta, C = C, K = K, sigma.error = sigma.error))
+graceI.test <- function(Y, X, lambda.2, eta = 0.05, C = 4 * sqrt(3), K = 10, sigma.error = NULL){
+  graceI.result <- grace.test(Y = Y, X = X, lambda.2 = lambda.2, eta = eta, C = C, K = K, sigma.error = sigma.error)
+  return(graceI.result)
 }
