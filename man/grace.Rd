@@ -86,5 +86,5 @@ sigma.error <- sqrt(t(beta) \%*\% Sigma \%*\% beta) / 2
 X <- mvrnorm(n, mu = rep(0, p), Sigma = Sigma)
 Y <- c(X \%*\% beta + rnorm(n, sd = sigma.error))
 
-grace(Y, X, L, lambda.L = c(0.08, 0.12), lambda.2 = c(0.08, 0.10, 0.12))
+grace(Y, X, L, lambda.L = c(0.08, 0.10, 0.12), lambda.2 = c(0.08, 0.10, 0.12))
 }
