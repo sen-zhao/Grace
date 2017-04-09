@@ -10,7 +10,7 @@
   Test for the association between Y and each column of X using the GraceI test based on Zhao and Shojaie (2016).
 }
 \usage{
-  graceI.test(Y,X,lambda.2,eta=0.05,C=4*sqrt(3),K=10,sigma.error=NULL,verbose=FALSE)
+  graceI.test(Y, X, lambda.2, eta = 0.05, C = 4 * sqrt(3), K = 10, sigma.error = NULL, verbose = FALSE)
 }
 \arguments{
   \item{Y}{
