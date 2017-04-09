@@ -10,7 +10,7 @@
   Calculate coefficient estimates of Grace based on methods described in Li and Li (2008).
 }
 \usage{
-  grace(Y, X, L, lambda.L, lambda.1=0, lambda.2=0, normalize.L=FALSE, K=10, verbose=FALSE)
+  grace(Y, X, L, lambda.L, lambda.1 = 0, lambda.2 = 0, normalize.L = FALSE, K = 10, verbose = FALSE)
 }
 \arguments{
   \item{Y}{
@@ -86,5 +86,5 @@ sigma.error <- sqrt(t(beta) \%*\% Sigma \%*\% beta) / 2
 X <- mvrnorm(n, mu = rep(0, p), Sigma = Sigma)
 Y <- c(X \%*\% beta + rnorm(n, sd = sigma.error))
 
-grace(Y, X, L, lambda.L = c(0.08, 0.12), lambda.2 = c(0.08, 0.12))
+grace(Y, X, L, lambda.L = c(0.08, 0.12), lambda.2 = c(0.08, 0.10, 0.12))
 }
